@@ -3,10 +3,10 @@ mod config;
 mod search;
 mod printer;
 
-use std::path::Path;
+use std::path::PathBuf;
 use std::fs;
 use clap::Parser;
-use crate::search::{SearchDb};
+use crate::search::SearchDb;
 
 #[derive(Parser, Debug)]
 struct Args {
@@ -14,20 +14,23 @@ struct Args {
 }
 
 fn main() {
+    ansi_term::enable_ansi_support().unwrap();
     let args = Args::parse();
-    verify_db_file();
+
+    let mut db_path: PathBuf = PathBuf::new();
+    config::get_db_filepath(&mut db_path);
+
+    verify_db_file(&db_path);
 
     let query: String = args.query;
 
-    let mut searcher: SearchDb = SearchDb::new();
+    let mut searcher: SearchDb = SearchDb::new(&db_path);
     let res = searcher.search_db(query);
     printer::print_results(res);
 }
 
-fn verify_db_file() {
-    let db_path = Path::new(config::DB_FILEPATH);
-
-    let db_file_exists: bool = Path::new(db_path).exists();
+fn verify_db_file(db_path: &PathBuf) {
+    let db_file_exists: bool = db_path.exists();
     if !db_file_exists {
         println!("downloading database file from the interweb");
 
@@ -35,6 +38,6 @@ fn verify_db_file() {
 
         database_utils::GetDB{
             url: config::DB_DOWNLOAD_URL,
-        }.download_db(db_path);
+        }.download_db(db_path.as_path());
     }
 }

@@ -1,6 +1,5 @@
-use crate::config;
-
 use std::fs::File;
+use std::path::PathBuf;
 use csv::Reader;
 
 pub struct SearchDb {
@@ -14,9 +13,8 @@ pub struct SearchItem {
 }
 
 impl SearchDb {
-    pub fn new() -> SearchDb {
-        SearchDb {reader: csv::Reader::from_path(config::DB_FILEPATH).unwrap()}
-        // let mut reader = csv::Reader::from_path(config::DB_FILEPATH).unwrap();
+    pub fn new(db_path: &PathBuf) -> SearchDb {
+        SearchDb {reader: csv::Reader::from_path(db_path.as_path()).unwrap()}
     }
 
     pub fn search_db(&mut self, query: String) -> Vec<SearchItem> {
@@ -42,18 +40,3 @@ impl SearchDb {
         return result_items;
     }
 }
-
-// fn search_db(query: &str) -> Option<String> {
-//     let mut reader = csv::Reader::from_path(config::DB_FILEPATH).unwrap();
-//
-//     for item in reader.records() {
-//         let item_unwrapped = item.unwrap();
-//         let name = item_unwrapped.get(0).unwrap();
-//         if name.to_lowercase() == query.to_lowercase() {
-//             return Some(format!("{} - {}", name, item_unwrapped.get(2).unwrap()));
-//         }
-//     }
-//
-//     None
-// }
-//
