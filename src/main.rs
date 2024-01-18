@@ -19,7 +19,7 @@ fn main() {
 
     let query: String = args.query;
 
-    let mut searcher: SearchDb = search::SearchDb::new();
+    let mut searcher: SearchDb = SearchDb::new();
     let res = searcher.search_db(query);
     printer::print_results(res);
 }
