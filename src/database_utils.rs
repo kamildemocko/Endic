@@ -10,7 +10,7 @@ pub struct GetDB<'a> {
 
 impl GetDB<'_> {
     pub fn download_db(&self, save_path: &Path) {
-        let response: Response = reqwest::blocking::get(self.url).unwrap();
+        let response: Response = reqwest::blocking::get(self.url).expect("cannot make request that downloads db");
         if response.status() == 404 {
             panic!("{}", "error downloading database from the interweb")
         }
@@ -18,13 +18,8 @@ impl GetDB<'_> {
         let db_download_response = response.bytes().unwrap();
 
         let mut content: Cursor<Bytes> = Cursor::new(db_download_response);
-        let mut file: File = File::create(save_path).unwrap();
+        let mut file: File = File::create(save_path).expect("cannot create database file");
 
-        let res_save_file = copy(&mut content, &mut file);
-        match res_save_file {
-            Ok(_) => (),
-            Err(e) => panic!("Error saving file {e}"),
-        }
-
+        copy(&mut content, &mut file).expect("error saving downloaded database file");
     }
 }

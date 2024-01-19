@@ -14,7 +14,8 @@ pub struct SearchItem {
 
 impl SearchDb {
     pub fn new(db_path: &PathBuf) -> SearchDb {
-        SearchDb {reader: csv::Reader::from_path(db_path.as_path()).unwrap()}
+        SearchDb {reader: csv::Reader::from_path(db_path.as_path())
+            .expect("cannot open database")}
     }
 
     pub fn search_db(&mut self, query: String) -> Vec<SearchItem> {
