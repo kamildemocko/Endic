@@ -13,3 +13,7 @@ Look up English words' meaning.
 
 ## Usage
 `<script> [-m | match] QUERY`
+
+## Screenshot
+![image](https://github.com/kamildemocko/endic_with_dnld/assets/50048116/1a87d075-ba3a-405e-9606-8998c39e348f)
+
