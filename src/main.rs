@@ -5,28 +5,32 @@ mod printer;
 
 use std::path::PathBuf;
 use std::fs;
-use clap::Parser;
+use std::env;
 use crate::search::SearchDb;
-
-#[derive(Parser, Debug)]
-struct Args {
-    query: String,
-}
 
 fn main() {
     ansi_term::enable_ansi_support().unwrap();
-    let args = Args::parse();
+    let query = get_args();
 
     let mut db_path: PathBuf = PathBuf::new();
     config::get_db_filepath(&mut db_path);
 
     verify_db_file(&db_path);
 
-    let query: String = args.query;
-
     let mut searcher: SearchDb = SearchDb::new(&db_path);
     let res = searcher.search_db(query);
     printer::print_results(res);
+}
+
+fn get_args() -> String {
+    let args: Vec<String> = env::args().skip(1).collect();
+
+    if args.len() == 0 {
+        eprintln!("usage: script QUERY");
+        std::process::exit(1);
+    }
+
+    args.join(" ")
 }
 
 fn verify_db_file(db_path: &PathBuf) {
