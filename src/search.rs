@@ -18,7 +18,7 @@ impl SearchDb {
             .expect("cannot open database")}
     }
 
-    pub fn search_db(&mut self, query: String) -> Vec<SearchItem> {
+    pub fn search_db(&mut self, query: String, match_word: bool) -> Vec<SearchItem> {
         let mut result_items: Vec<SearchItem> = vec!();
 
         for item in self.reader.records() {
@@ -32,16 +32,29 @@ impl SearchDb {
                 .map(|m| m.trim().to_string())
                 .collect();
 
-            if name.to_lowercase() == query.to_lowercase() {
-                let result_item: SearchItem = SearchItem {
-                    name: String::from(name),
-                    word_type: String::from(word_type),
-                    meanings,
-                };
-                result_items.push(result_item);
+            if match_word {
+                if name.to_lowercase() == query.to_lowercase() {
+                    result_items.push(
+                        SearchDb::prepare_search_item(name, word_type, meanings)
+                    );
+                }
+            } else {
+                if name.to_lowercase().starts_with(&query.to_lowercase()) {
+                    result_items.push(
+                        SearchDb::prepare_search_item(name, word_type, meanings)
+                    );
+                }
             }
         }
 
         return result_items;
+    }
+
+    fn prepare_search_item(name: &str, word_type: &str, meanings: Vec<String>) -> SearchItem {
+        SearchItem {
+            name: String::from(name),
+            word_type: String::from(word_type),
+            meanings,
+        }
     }
 }

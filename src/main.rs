@@ -10,7 +10,7 @@ use crate::search::SearchDb;
 
 fn main() {
     ansi_term::enable_ansi_support().unwrap();
-    let query = args::get_args();
+    let (match_word, query) = args::get_args();
 
     let mut db_path: PathBuf = PathBuf::new();
     config::get_db_filepath(&mut db_path);
@@ -18,7 +18,7 @@ fn main() {
     verify_db_file(&db_path);
 
     let mut searcher: SearchDb = SearchDb::new(&db_path);
-    let res = searcher.search_db(query);
+    let res = searcher.search_db(query, match_word);
     printer::print_results(res);
 }
 
