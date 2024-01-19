@@ -6,7 +6,10 @@ pub fn get_args() -> (bool, String) {
     let mut words: Vec<String> = Vec::new();
 
     if args.len() == 0 {
-        eprintln!("usage: script QUERY");
+        eprintln!("usage: script [-m | --match] QUERY");
+        eprintln!("\tQUERY = Word to search for");
+        eprintln!("\t-m | --match = Whole word search");
+
         std::process::exit(1);
     }
 
