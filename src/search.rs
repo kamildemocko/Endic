@@ -9,7 +9,7 @@ pub struct SearchDb {
 pub struct SearchItem {
     pub name: String,
     pub word_type: String,
-    pub meaning: String,
+    pub meanings: Vec<String>,
 }
 
 impl SearchDb {
@@ -26,13 +26,17 @@ impl SearchDb {
 
             let word_type: &str = item_unwrapped.get(1).unwrap();
             let name = item_unwrapped.get(0).unwrap();
-            let meaning = item_unwrapped.get(2).unwrap();
+            let meanings_group = item_unwrapped.get(2).unwrap();
+            let meanings: Vec<String> = meanings_group
+                .split(";")
+                .map(|m| m.trim().to_string())
+                .collect();
 
             if name.to_lowercase() == query.to_lowercase() {
                 let result_item: SearchItem = SearchItem {
                     name: String::from(name),
                     word_type: String::from(word_type),
-                    meaning: String::from(meaning),
+                    meanings,
                 };
                 result_items.push(result_item);
             }

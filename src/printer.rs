@@ -8,9 +8,12 @@ pub fn print_results(items: Vec<SearchItem>) {
             item.word_type = "n/a".to_string();
         }
 
-        println!("{} ({}) - {}",
+        println!("{} ({})",
                  item.name.purple(),
-                 item.word_type.bright_black(),
-                 item.meaning.yellow());
+                 item.word_type.bright_black());
+
+        for m in item.meanings {
+            println!("  ◼  {}", m.yellow());
+        }
     }
 }
