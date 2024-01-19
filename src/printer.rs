@@ -13,7 +13,7 @@ pub fn print_results(items: Vec<SearchItem>) {
                  item.word_type.bright_black());
 
         for m in item.meanings {
-            println!("  ◼  {}", m.yellow());
+            println!("  »  {}", m.yellow());
         }
     }
 }
