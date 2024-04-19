@@ -147,7 +147,7 @@ dependencies = [
 
 [[package]]
 name = "endic_with_dnld"
-version = "1.0.2"
+version = "1.0.5"
 dependencies = [
  "ansi_term",
  "bytes",
