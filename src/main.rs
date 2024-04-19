@@ -9,7 +9,9 @@ use std::fs;
 use crate::search::SearchDb;
 
 fn main() {
+    #[cfg(windows)]
     ansi_term::enable_ansi_support().unwrap();
+
     let (match_word, query) = args::get_args();
 
     let mut db_path: PathBuf = PathBuf::new();
