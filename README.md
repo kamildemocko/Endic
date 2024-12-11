@@ -17,5 +17,6 @@ Look up English words' meaning.
 `<script> [-m | match] QUERY`
 
 ## Screenshot
-![image](https://github.com/kamildemocko/endic_with_dnld/assets/50048116/1a87d075-ba3a-405e-9606-8998c39e348f)
+![image](https://github.com/user-attachments/assets/4a019776-c85c-4f35-8875-c6bd9805cf9f)
+
 
