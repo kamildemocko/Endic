@@ -1,5 +1,5 @@
 [package]
-name = "endic_with_dnld"
+name = "endic"
 version = "1.0.7"
 edition = "2021"
 description = "simple English explanatory dictionary in command line"
