@@ -1,18 +1,21 @@
 use crate::search::SearchItem;
+use indexmap::IndexMap;
 
 use colored::Colorize;
 
-pub fn print_results(items: Vec<SearchItem>) {
-    for mut item in items {
-        if item.word_type == "" {
-            item.word_type = "n/a".to_string();
-        }
+pub fn print_results(items: &IndexMap<String, SearchItem>) {
+    for (_, value) in items.iter() {
+        let word_type = if value.word_type.is_empty() {
+            "n/a".to_string()
+        } else {
+            value.word_type.clone()
+        };
 
         println!("{} ({})",
-                 item.name.purple(),
-                 item.word_type.bright_black());
+                 value.name.purple(),
+                 word_type.bright_black());
 
-        for m in item.meanings {
+        for m in &value.meanings {
             println!("  »  {}", m.yellow());
         }
     }

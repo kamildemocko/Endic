@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::path::PathBuf;
 use csv::Reader;
+use indexmap::IndexMap;
 
 pub struct SearchDb {
     reader: Reader<File>
@@ -18,8 +19,8 @@ impl SearchDb {
             .expect("cannot open database")}
     }
 
-    pub fn search_db(&mut self, query: String, match_word: bool) -> Vec<SearchItem> {
-        let mut result_items: Vec<SearchItem> = vec!();
+    pub fn search_db(&mut self, query: String, match_word: bool) -> IndexMap<String, SearchItem> {
+        let mut result_items: IndexMap<String, SearchItem> = IndexMap::new();
 
         for item in self.reader.records() {
             let item_unwrapped = item.unwrap();
@@ -34,15 +35,21 @@ impl SearchDb {
 
             if match_word {
                 if name.to_lowercase() == query.to_lowercase() {
-                    result_items.push(
-                        SearchDb::prepare_search_item(name, word_type, meanings)
-                    );
+                    result_items
+                        .entry(name.to_string())
+                        .and_modify(|val| val.meanings.extend(meanings.clone()))
+                        .or_insert(
+                        SearchDb::prepare_search_item(name, word_type, meanings.clone())
+                        );
                 }
             } else {
                 if name.to_lowercase().starts_with(&query.to_lowercase()) {
-                    result_items.push(
-                        SearchDb::prepare_search_item(name, word_type, meanings)
-                    );
+                    result_items
+                        .entry(name.to_string())
+                        .and_modify(|val| val.meanings.extend(meanings.clone()))
+                        .or_insert(
+                        SearchDb::prepare_search_item(name, word_type, meanings.clone())
+                        );
                 }
             }
         }

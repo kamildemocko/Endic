@@ -21,7 +21,7 @@ fn main() {
 
     let mut searcher: SearchDb = SearchDb::new(&db_path);
     let res = searcher.search_db(query, match_word);
-    printer::print_results(res);
+    printer::print_results(&res);
 }
 
 fn verify_db_file(db_path: &PathBuf) {
