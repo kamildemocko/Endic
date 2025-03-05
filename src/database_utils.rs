@@ -1,25 +1,30 @@
 use std::fs::File;
 use std::io::{copy, Cursor};
 use std::path::Path;
+use anyhow::{anyhow, Context, Result};
 use bytes::Bytes;
 use reqwest::blocking::Response;
 
-pub struct GetDB<'a> {
-    pub url: &'a str,
+pub struct GetDB {
+    pub url: String
 }
 
-impl GetDB<'_> {
-    pub fn download_db(&self, save_path: &Path) {
-        let response: Response = reqwest::blocking::get(self.url).expect("cannot make request that downloads db");
+impl GetDB {
+    pub fn download_db(&self, save_path: &Path) -> Result<()> {
+        let response: Response = reqwest::blocking::get(&self.url)
+            .context("cannot make request that downloads db")?;
         if response.status() == 404 {
-            panic!("{}", "error downloading database from the interweb")
+            return Err(anyhow!("error downloading database from the interweb"));
         }
 
-        let db_download_response = response.bytes().unwrap();
+        let db_download_response = response.bytes()
+            .context("cannot get bytes from response when downloading DB")?;
 
         let mut content: Cursor<Bytes> = Cursor::new(db_download_response);
-        let mut file: File = File::create(save_path).expect("cannot create database file");
+        let mut file: File = File::create(save_path).context("cannot create database file")?;
 
-        copy(&mut content, &mut file).expect("error saving downloaded database file");
+        copy(&mut content, &mut file).context("error saving downloaded database file")?;
+
+        Ok(())
     }
 }

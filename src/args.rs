@@ -1,4 +1,5 @@
 use std::env;
+use colored::Colorize;
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 
@@ -8,11 +9,11 @@ pub fn get_args() -> (bool, String) {
     let mut words: Vec<String> = Vec::new();
 
     if args.len() == 0 {
-        println!("Usage: ");
-        println!("endic [--match | --version] QUERY");
-        println!(" » QUERY = Word to search for");
-        println!(" » --match   | -m = Whole word search");
-        println!(" » --version | -v = Shows app version");
+        println!("{}", "Usage:".bold());
+        println!("{} [{}] {}", "endic".green(), "--match | --version".blue(), "QUERY".red());
+        println!(" » {} » Word to search for", "QUERY".red());
+        println!(" » {}   | {} » Whole word search", "--match".blue(), "-m".blue());
+        println!(" » {} | {} » Shows app version", "--version".blue(), "-v".blue());
 
         std::process::exit(0);
     }
