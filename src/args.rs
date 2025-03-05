@@ -10,9 +10,9 @@ pub fn get_args() -> (bool, String) {
     if args.len() == 0 {
         println!("Usage: ");
         println!("endic [--match | --version] QUERY");
-        println!(" >> QUERY = Word to search for");
-        println!(" >> --match   | -m = Whole word search");
-        println!(" >> --version | -v = Shows app version");
+        println!(" » QUERY = Word to search for");
+        println!(" » --match   | -m = Whole word search");
+        println!(" » --version | -v = Shows app version");
 
         std::process::exit(0);
     }

@@ -1,6 +1,6 @@
 [package]
 name = "endic"
-version = "1.0.8"
+version = "1.0.9"
 edition = "2021"
 description = "simple English explanatory dictionary in command line"
 license = "MIT"
