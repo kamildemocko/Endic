@@ -31,14 +31,16 @@ fn main() -> Result<()>{
 fn verify_db_file(db_path: &PathBuf) -> Result<()> {
     let db_file_exists: bool = db_path.exists();
     if !db_file_exists {
-        println!("downloading database file from the interweb");
+        println!("downloading english database dictionary file from the internet");
 
         let db_path_parent = db_path.parent()
             .ok_or_else(|| anyhow!("path {:?} has no parent", db_path))?;
         fs::create_dir_all(db_path_parent)?;
 
-        database_utils::GetDB{url: config::DB_DOWNLOAD_URL.to_string()}
+        database_utils::DatabaseDownloader{url: config::DB_DOWNLOAD_URL.to_string()}
             .download_db(db_path.as_path())?;
+
+        println!("download complete!");
     }
 
     Ok(())
